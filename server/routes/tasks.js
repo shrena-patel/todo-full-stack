@@ -10,4 +10,18 @@ router.get('/', (request, response) => {
     })
 })
 
+router.post('/', (request, response) => {
+    db.addTask(request.body)
+    .then(ids => {
+        response.json({id: ids[0]})
+    })
+})
+
+router.delete('/:id', (request, response) => {
+    db.deleteTask(request.params.id)
+    .then(tasksDeleted => {
+        response.json(tasksDeleted)
+    })
+})
+
 module.exports = router
