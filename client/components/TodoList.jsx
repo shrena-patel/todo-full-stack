@@ -3,7 +3,7 @@ import AddTodo from './AddTodo'
 import { connect } from 'react-redux'
 import { initTask, deleteTask } from '../actions/tasks'
 
-import { getAllTasks, apiDeleteTask} from '../apis/tasks'
+import { getAllTasks, apiDeleteTask } from '../apis/tasks'
 
 class TodoList extends React.Component {
 
@@ -16,6 +16,7 @@ class TodoList extends React.Component {
         return (
             <>
                 <AddTodo />
+
                 <section className="main">
                     <input id="toggle-all" className="toggle-all" type="checkbox" />
                     <label htmlFor="toggle-all">Mark all as complete</label>
@@ -30,37 +31,43 @@ class TodoList extends React.Component {
                                         <label>{task.task}</label>
                                         <button className="destroy" onClick={() => {
                                             apiDeleteTask(task.id)
-                                            .then(() => {
-                                                this.props.dispatch(deleteTask(task))
-                                            })
+                                                .then(() => {
+                                                    this.props.dispatch(deleteTask(task))
+                                                })
                                         }}></button>
                                     </div>
                                     <input className="edit" value="Rule the web" />
                                 </li>
 
                             )
+
                         })}
 
-                        {/* <!-- These are here just to show the structure of the list items --> */}
-                        {/* <!-- List items should get the className `editing` when editing and `completed` when marked as completed --> */}
-                        {/* <li className="completed">
-                        <div className="view">
-                            <input className="toggle" type="checkbox" checked />
-                            <label>Taste JavaScript</label>
-                            <button className="destroy"></button>
-                        </div>
-                        <input className="edit" value="Create a TodoMVC template" />
-                    </li>
-                    <li>
-                        <div className="view">
-                            <input className="toggle" type="checkbox" />
-                            <label>Buy a unicorn</label>
-                            <button className="destroy"></button>
-                        </div>
-                        <input className="edit" value="Rule the web" />
-                    </li> */}
                     </ul>
                 </section>
+
+                <footer className="footer">
+                    {/* <!-- This should be `0 items left` by default --> */}
+                    <span className="todo-count"><strong>{this.props.tasks.length}</strong> 
+                    
+                    { (this.props.tasks.length == 1) ? ' item' : ' items' } left
+                    </span> 
+                    {/* ABOVE - 0 needs to be tasks.length */}
+                    {/* <!-- Remove this if you don't implement routing --> */}
+                    <ul className="filters">
+                        <li>
+                            <a className="selected" href="#/">All</a>
+                        </li>
+                        <li>
+                            <a href="#/active">Active</a>
+                        </li>
+                        <li>
+                            <a href="#/completed">Completed</a>
+                        </li>
+                    </ul>
+                    {/* <!-- Hidden if no completed items are left ↓ --> */}
+                    <button className="clear-completed">Clear completed</button>
+                </footer>
             </>
         )
     }
