@@ -4,6 +4,6 @@ const server = express()
 
 server.use(express.json())
 server.use(express.static("public"))
-server.use('/v1/items', taskRoutes)
+server.use('/v1/tasks', taskRoutes)
 
 module.exports = server
