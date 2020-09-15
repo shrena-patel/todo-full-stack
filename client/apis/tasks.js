@@ -18,3 +18,10 @@ export function apiDeleteTask (id) {
     .delete('/v1/tasks/' + id)
     .then(response => response.body)
 }
+
+export function apiUpdateTask (id, task) {
+    return request
+    .patch('/v1/tasks/' + id)
+    .send(task)
+    .then(response => response.body)
+}

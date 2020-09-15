@@ -17,11 +17,26 @@ router.post('/', (request, response) => {
     })
 })
 
+router.patch('/:id', (request, response) => {
+    db.updateTask(request.params.id, request.body)
+    .then(taskUpdated => {
+        response.json(taskUpdated)
+    })
+    .catch(err => {
+        console.log(err)
+        response.status(500)
+        .json({message: 'Something went very wrong'})
+    
+    })
+})
+
 router.delete('/:id', (request, response) => {
     db.deleteTask(request.params.id)
     .then(tasksDeleted => {
         response.json(tasksDeleted)
     })
 })
+
+
 
 module.exports = router

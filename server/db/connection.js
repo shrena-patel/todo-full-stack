@@ -18,12 +18,18 @@ function deleteTask (id, db = connection) {
     .del()
 }
 
+function updateTask (id, task, db = connection) {
+    return db('tasks')
+    .where('id', id)
+    .update(task)
+}
 
 
 module.exports = {
     getTasks,
     addTask,
-    deleteTask
+    deleteTask,
+    updateTask
 }
 
 
