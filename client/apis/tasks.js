@@ -20,6 +20,7 @@ export function apiDeleteTask (id) {
 }
 
 export function apiUpdateTask (id, task) {
+    console.log(id, task)
     return request
     .patch('/v1/tasks/' + id)
     .send(task)

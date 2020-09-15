@@ -45,11 +45,25 @@ class TodoList extends React.Component {
             apiUpdateTask(taskId, newTask)
             .then(updatedTask => {
                 console.log(updatedTask)
-                this.props.dispatch(updateTask(taskId, newTask))
+                this.props.dispatch(updateTask(taskId, newTask)) //need to change
+                //next: chnage what todos are being returned when you map over them - for clicking on completed
             })
         }
     }
 
+    handleOnClick = (task, event) => {
+        console.log(event.target.checked)
+        const completed = { completed: event.target.checked }
+        task.completed = event.target.checked
+        apiUpdateTask(task.id, completed)
+
+            .then(updatedTask => {
+                console.log('well done')
+                this.props.dispatch(updateTask(task.id, task))
+            })
+
+    }
+    
     render() {
         return (
             <>
@@ -65,8 +79,9 @@ class TodoList extends React.Component {
                             return (
                                 <li key={task.id}>
                                     <div className="view">
-                                        <input className="toggle" type="checkbox" />
+                                        <input className="toggle" type="checkbox" onChange={(event) => this.handleOnClick(task, event)} /> 
                                         <label onDoubleClick={() => {
+                                            console.log('hello')
                                             this.setState({
                                                 editTask: task.id
                                             })
@@ -74,12 +89,14 @@ class TodoList extends React.Component {
                                             {(this.state.editTask == task.id) ? <input type="text" defaultValue={task.task} onKeyDown={(event) => this.handleKeyPress(task.id, event)}/> : task.task}
 
                                         </label>
+
                                         <button className="destroy" onClick={() => {
                                             apiDeleteTask(task.id)
                                                 .then(() => {
                                                     this.props.dispatch(deleteTask(task))
                                                 })
                                         }}></button>
+
                                     </div>
                                     <input className="edit" value="Rule the web" />
                                 </li>
@@ -97,6 +114,7 @@ class TodoList extends React.Component {
                     <span className="todo-count"><strong>{this.props.tasks.length}</strong>
 
                         {(this.props.tasks.length == 1) ? ' item' : ' items'} left
+                        {/* ABOVE- if tasks.length = 1, print item, else print items */}
                     </span>
                     {/* ABOVE - 0 needs to be tasks.length */}
                     {/* <!-- Remove this if you don't implement routing --> */}
