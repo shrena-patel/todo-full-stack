@@ -2,7 +2,7 @@ import React from 'react'
 import AddTodo from './AddTodo'
 import EditTodo from './EditTodo'
 import { connect } from 'react-redux'
-import { initTask, deleteTask } from '../actions/tasks'
+import { initTask, deleteTask, updateTask } from '../actions/tasks'
 
 import { getAllTasks, apiDeleteTask, apiUpdateTask } from '../apis/tasks'
 
@@ -45,6 +45,7 @@ class TodoList extends React.Component {
             apiUpdateTask(taskId, newTask)
             .then(updatedTask => {
                 console.log(updatedTask)
+                this.props.dispatch(updateTask(taskId, newTask))
             })
         }
     }
