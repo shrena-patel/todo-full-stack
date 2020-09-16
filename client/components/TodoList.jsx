@@ -88,8 +88,8 @@ class TodoList extends React.Component {
                     {/* ABOVE input is the down arrow next to 'What needs to be done?' */}
 
                     <label htmlFor="toggle-all">Mark all as complete</label>
-                    <ul className="todo-list">
 
+                    <ul className="todo-list">
 
                         {/* FILTER FUNCTION ==================================
                         // This filter function is filtering over the tasks. 
@@ -124,17 +124,26 @@ class TodoList extends React.Component {
 
                                         {/* BELOW INPUT ===============================================
                                         // The input is the green tick box.
-                                        // Onchange - when state is changed - call the handleOnClick function */}
+                                        // Onchange - when state is changed - call the handleOnClick function 
+                                        // the handleOnClick funciton takes two parameters: task and event.
+                                        // */}
                                         <input className="toggle" type="checkbox" onChange={(event) => this.handleOnClick(task, event)} defaultChecked={task.completed} />
 
+                                        {/* ON DOUBLE CLICK ============================================
+                                        // set state so that editTask property is the id of task
+                                         */}
                                         <label onDoubleClick={() => {
                                             this.setState({
                                                 editTask: task.id
                                             })
                                         }}>
+                                            {/* BELOW - if this.state.editTask equals the id of task, display an input field that can be used to update the current task. Else, display the current task */}
                                             {(this.state.editTask == task.id) ? <input type="text" defaultValue={task.task} onKeyDown={(event) => this.handleKeyPress(task.id, event)} /> : task.task}
                                         </label>
 
+                                        {/* BELOW - the destroy button is the red cross icon
+                                        // when the icon is clicked on, the apiDeleteTask function is called, taking in the task.id parameter so it knows which task to delete
+                                        // then, the deleteTask action is dispatched to redux */}
                                         <button className="destroy" onClick={() => {
                                             apiDeleteTask(task.id)
                                                 .then(() => {
