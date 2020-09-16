@@ -36,8 +36,7 @@ class TodoList extends React.Component {
 
     handleKeyPress = (taskId, event) => {
         if (event.key == 'Enter') {
-            
-            console.log(event.target.value)
+
             const newTask = { task: event.target.value }
 
             apiUpdateTask(taskId, newTask)
@@ -57,14 +56,11 @@ class TodoList extends React.Component {
     // 5. dispatch the updateTask function to redux, taking task.id and task as the parameters
 
     handleOnClick = (task, event) => {
-        // console.log(event.target.checked)
         const completed = { completed: event.target.checked }
         task.completed = event.target.checked
 
-        // console.log('this is filter state', this.state.filter)
         apiUpdateTask(task.id, completed)
             .then(updatedTask => {
-                // console.log('well done')
                 this.props.dispatch(updateTask(task.id, task))
             })
     }
@@ -88,15 +84,20 @@ class TodoList extends React.Component {
 
                 <section className="main">
                     <input id="toggle-all" className="toggle-all" type="checkbox" />
+
                     {/* ABOVE input is the down arrow next to 'What needs to be done?' */}
+
                     <label htmlFor="toggle-all">Mark all as complete</label>
                     <ul className="todo-list">
 
-                        {/* Filter thorugh task - if 'active' set task.completed to false. if 'completed', set task.completed to true. Then do the map function afterwards. */}
-                        {/* this.state.filter refers to the state property of 'filter' */}
-                       
+
                         {/* FILTER FUNCTION ==================================
-                        This function */}
+                        // This filter function is filtering over the tasks. 
+                        // 1. If the filter property is set to active, return the completed property of task to be set to false
+                        // 2. If the filter property is set to completed, return the completed property of task to be set to true
+                        // 3. Otherwise, return the default value which is 'all'.
+                        // 4. this.state.filter refers to the state property of 'filter' */}
+
                         {this.props.tasks.filter(task => {
                             switch (this.state.filter) {
                                 case 'active':
@@ -106,21 +107,32 @@ class TodoList extends React.Component {
                                 default:
                                     return true
                             }
-                        }).map(task => {
-
+                        })
+                        
+                        .map(task => {
                             return (
+
+                                // LIST ITEM CLASSNAME ================================================
+                                // list item is each task returned from the map
+                                // if task.completed is set to true, set the class name to completed, otherwise don't set a class name.
+                                // this enables the the strike through functionality - i.e. when the task is marked as completed, the className is applied 
+                                // (in CSS, the 'completed' class is set to text-decoration: line-through)
+
                                 <li key={task.id} className={task.completed ? "completed" : ""} >
+
                                     <div className="view">
+
+                                        {/* BELOW INPUT ===============================================
+                                        // The input is the green tick box.
+                                        // Onchange - when state is changed - call the handleOnClick function */}
                                         <input className="toggle" type="checkbox" onChange={(event) => this.handleOnClick(task, event)} defaultChecked={task.completed} />
 
                                         <label onDoubleClick={() => {
-
                                             this.setState({
                                                 editTask: task.id
                                             })
                                         }}>
                                             {(this.state.editTask == task.id) ? <input type="text" defaultValue={task.task} onKeyDown={(event) => this.handleKeyPress(task.id, event)} /> : task.task}
-
                                         </label>
 
                                         <button className="destroy" onClick={() => {
@@ -134,35 +146,38 @@ class TodoList extends React.Component {
                                     <input className="edit" value="Rule the web" />
                                 </li>
                             )
-
                         })}
 
                     </ul>
                 </section>
 
-                <footer className="footer">
-                    {/* <!-- This should be `0 items left` by default --> */}
-                    <span className="todo-count"><strong>{this.props.tasks.length}</strong>
+                {/* FOOTER =============================================================================
+                Move this to a new Footer Component */}
 
+                <footer className="footer">
+                    <span className="todo-count"><strong>{this.props.tasks.length}</strong>
                         {(this.props.tasks.length == 1) ? ' item' : ' items'} left
                         {/* ABOVE- if tasks.length = 1, print item, else print items */}
                     </span>
-                    {/* ABOVE - 0 needs to be tasks.length */}
-                    {/* <!-- Remove this if you don't implement routing --> */}
+
+                  
+                  
                     <ul className="filters">
+
                         <li>
-                            {/* React Router */}
                             <a className={this.state.filter == 'all' ? "selected" : ""} href="#/" onClick={event => this.handleFilterClick(event, 'all')}>All</a>
                         </li>
+
                         <li>
-                            {/* React Router */}
                             <a className={this.state.filter == 'active' ? "selected" : ""} href="#/active" onClick={event => this.handleFilterClick(event, 'active')}>Active</a>
                         </li>
+
                         <li>
-                            {/* React Router */}
                             <a className={this.state.filter == 'completed' ? "selected" : ""} href="#/completed" onClick={event => this.handleFilterClick(event, 'completed')}>Completed</a>
                         </li>
+
                     </ul>
+
                     {/* <!-- Hidden if no completed items are left ↓ --> */}
                     <button className="clear-completed">Clear completed</button>
                 </footer>
@@ -178,11 +193,23 @@ function mapStateToProps(globalState) {
 export default connect(mapStateToProps)(TodoList)
 
 
-// next: separate footer into new Footer component
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+{/* Filter thorugh task - if 'active' set task.completed to false. if 'completed', set task.completed to true. Then do the map function afterwards. */}
+                       
 
 // console.log('hi')
 // this.props.tasks && <EditTodo />
