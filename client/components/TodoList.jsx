@@ -13,14 +13,14 @@ class TodoList extends React.Component {
     // For the filter property, we're setting it to 'all' as the default, so that 'All' in the footer of the todo list has a box around it by default
 
     state = {
-        editTask: null,   
+        editTask: null,
         filter: 'all'
     }
 
     // ON COMPONENT LOAD ====================================================
     // 1. call the getAllTasks API function 
     // 2. dispatch the initTask function to redux, taking 'task' as the function's parameter ('task' is the result of the getAllTasks API function)
-    
+
     componentDidMount() {
         getAllTasks()
             .then(task => (this.props.dispatch(initTask(task))))
@@ -108,54 +108,54 @@ class TodoList extends React.Component {
                                     return true
                             }
                         })
-                        
-                        .map(task => {
-                            return (
 
-                                // LIST ITEM CLASSNAME ================================================
-                                // list item is each task returned from the map
-                                // if task.completed is set to true, set the class name to completed, otherwise don't set a class name.
-                                // this enables the the strike through functionality - i.e. when the task is marked as completed, the className is applied 
-                                // (in CSS, the 'completed' class is set to text-decoration: line-through)
+                            .map(task => {
+                                return (
 
-                                <li key={task.id} className={task.completed ? "completed" : ""} >
+                                    // LIST ITEM CLASSNAME ================================================
+                                    // list item is each task returned from the map
+                                    // if task.completed is set to true, set the class name to completed, otherwise don't set a class name.
+                                    // this enables the the strike through functionality - i.e. when the task is marked as completed, the className is applied 
+                                    // (in CSS, the 'completed' class is set to text-decoration: line-through)
 
-                                    <div className="view">
+                                    <li key={task.id} className={task.completed ? "completed" : ""} >
 
-                                        {/* BELOW INPUT ===============================================
+                                        <div className="view">
+
+                                            {/* BELOW INPUT ===============================================
                                         // The input is the green tick box.
                                         // Onchange - when state is changed - call the handleOnClick function 
                                         // the handleOnClick funciton takes two parameters: task and event.
                                         // */}
-                                        <input className="toggle" type="checkbox" onChange={(event) => this.handleOnClick(task, event)} defaultChecked={task.completed} />
+                                            <input className="toggle" type="checkbox" onChange={(event) => this.handleOnClick(task, event)} defaultChecked={task.completed} />
 
-                                        {/* ON DOUBLE CLICK ============================================
+                                            {/* ON DOUBLE CLICK ============================================
                                         // set state so that editTask property is the id of task
                                          */}
-                                        <label onDoubleClick={() => {
-                                            this.setState({
-                                                editTask: task.id
-                                            })
-                                        }}>
-                                            {/* BELOW - if this.state.editTask equals the id of task, display an input field that can be used to update the current task. Else, display the current task */}
-                                            {(this.state.editTask == task.id) ? <input type="text" defaultValue={task.task} onKeyDown={(event) => this.handleKeyPress(task.id, event)} /> : task.task}
-                                        </label>
+                                            <label onDoubleClick={() => {
+                                                this.setState({
+                                                    editTask: task.id
+                                                })
+                                            }}>
+                                                {/* BELOW - if this.state.editTask equals the id of task, display an input field that can be used to update the current task. Else, display the current task */}
+                                                {(this.state.editTask == task.id) ? <input type="text" defaultValue={task.task} onKeyDown={(event) => this.handleKeyPress(task.id, event)} /> : task.task}
+                                            </label>
 
-                                        {/* BELOW - the destroy button is the red cross icon
+                                            {/* BELOW - the destroy button is the red cross icon
                                         // when the icon is clicked on, the apiDeleteTask function is called, taking in the task.id parameter so it knows which task to delete
                                         // then, the deleteTask action is dispatched to redux */}
-                                        <button className="destroy" onClick={() => {
-                                            apiDeleteTask(task.id)
-                                                .then(() => {
-                                                    this.props.dispatch(deleteTask(task))
-                                                })
-                                        }}></button>
+                                            <button className="destroy" onClick={() => {
+                                                apiDeleteTask(task.id)
+                                                    .then(() => {
+                                                        this.props.dispatch(deleteTask(task))
+                                                    })
+                                            }}></button>
 
-                                    </div>
-                                    <input className="edit" value="Rule the web" />
-                                </li>
-                            )
-                        })}
+                                        </div>
+                                        <input className="edit" value="Rule the web" />
+                                    </li>
+                                )
+                            })}
 
                     </ul>
                 </section>
@@ -166,11 +166,11 @@ class TodoList extends React.Component {
                 <footer className="footer">
                     <span className="todo-count"><strong>{this.props.tasks.length}</strong>
                         {(this.props.tasks.length == 1) ? ' item' : ' items'} left
-                        {/* ABOVE- if tasks.length = 1, print item, else print items */}
+                        {/* ABOVE- if tasks.length = 1, print: '1 item left', else print: 'X items left' */}
                     </span>
 
-                  
-                  
+
+
                     <ul className="filters">
 
                         <li>
@@ -217,8 +217,8 @@ export default connect(mapStateToProps)(TodoList)
 
 
 
-{/* Filter thorugh task - if 'active' set task.completed to false. if 'completed', set task.completed to true. Then do the map function afterwards. */}
-                       
+{/* Filter thorugh task - if 'active' set task.completed to false. if 'completed', set task.completed to true. Then do the map function afterwards. */ }
+
 
 // console.log('hi')
 // this.props.tasks && <EditTodo />

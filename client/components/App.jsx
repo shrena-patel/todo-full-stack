@@ -9,7 +9,7 @@ class App extends React.Component {
     return (
       <>
         <header className="header">
-          <h1>todos</h1>
+          <h1>Todo List</h1>
           <TodoList/>
         </header>
         <section className="main"></section>
