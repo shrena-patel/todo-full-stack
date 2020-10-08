@@ -10,7 +10,8 @@
     "watch:server": "nodemon --watch server",
     "start": "node server",
     "test": "jest --noStackTrace --watchAll",
-    "build": "webpack"
+    "build": "webpack",
+    "knex": "knex --knexfile ./knexfile.js"
   },
   "author": "EDA",
   "license": "ISC",

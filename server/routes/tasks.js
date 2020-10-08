@@ -8,12 +8,24 @@ router.get('/', (request, response) => {
     .then(task => {
         response.json(task)
     })
+    .catch(err => {
+        console.log(err)
+        response.status(500)
+        .json({message: 'Something went very wrong'})
+    
+    })
 })
 
 router.post('/', (request, response) => {
     db.addTask(request.body)
     .then(ids => {
         response.json({id: ids[0]})
+    })
+    .catch(err => {
+        console.log(err)
+        response.status(500)
+        .json({message: 'Something went very wrong'})
+    
     })
 })
 
@@ -34,6 +46,12 @@ router.delete('/:id', (request, response) => {
     db.deleteTask(request.params.id)
     .then(tasksDeleted => {
         response.json(tasksDeleted)
+    })
+    .catch(err => {
+        console.log(err)
+        response.status(500)
+        .json({message: 'Something went very wrong'})
+    
     })
 })
 
